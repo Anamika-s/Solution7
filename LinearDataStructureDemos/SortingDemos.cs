@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LinearDataStructureDemos
 {
-    enum Sort { Bubble=1, Selection, Insertion, Shell };
+    enum Sort { Bubble=1, Selection, Insertion, Shell, Merge };
 
     internal class SortingDemos
     {
@@ -21,6 +21,7 @@ namespace LinearDataStructureDemos
                 case (int)Sort.Bubble: BubbleSort(); break;
                 case (int)Sort.Selection: SelectionSort(); break;
                 case (int)Sort.Shell: ShellSort(); break;
+                case (int)Sort.Merge: SortMethod(num, 0, num.Length-1); break;
 
             }
             DisplayElements();
@@ -46,9 +47,9 @@ namespace LinearDataStructureDemos
         static void SelectionSort()
         {
             int temp;
-            for (int i = 0; i < num.Length-1; i++)
+            for (int i = 0; i < num.Length - 1; i++)
             {
-                for (int j = i+1; j < num.Length; j++)
+                for (int j = i + 1; j < num.Length; j++)
                 {
                     if (num[i] > num[j])
                     {
@@ -80,6 +81,58 @@ namespace LinearDataStructureDemos
                     num[j] = temp;
                 }
                 gap = gap / 2;
+            }
+        }
+        static void MergeSort(int[] numbers, int left, int mid, int right)
+        {
+            int[] temp = new int[20];
+            int i, left_end, no, temp_pos;
+
+            left_end = (mid - 1);
+            temp_pos = left;
+            no = (right - left+1);
+
+            while ((left <= left_end) && (mid <= right))
+
+            {
+                if (num[left] <= num[mid])
+                {
+                    temp[temp_pos++] = num[left++];
+
+                }
+                else
+                {
+                    temp[temp_pos++] = num[mid++];
+                }
+            }
+            while (left <= left_end)
+            {
+                temp[temp_pos++] = num[left++];
+
+            }
+            while (mid <= right)
+            {
+                temp[temp_pos++] = num[mid++];
+
+            }
+
+            for (i = 0; i < no; i++)
+            {
+                num[right] = temp[right];
+                right--;
+            }
+
+        }
+
+        static void SortMethod(int[] numbers, int left, int right)
+        {
+            int mid;
+            if(right>left)
+            {
+                mid = (right + left) / 2;
+                SortMethod(numbers, left , mid);
+                SortMethod(numbers, (mid + 1), right);
+                MergeSort(numbers, left, (mid + 1), right);
             }
         }
         static void DisplayElements()
